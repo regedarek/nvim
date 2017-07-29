@@ -11,6 +11,7 @@ call minpac#add('tpope/vim-projectionist')
 call minpac#add('benmills/vimux', {'type': 'opt'})
 call minpac#add('pangloss/vim-javascript', {'type': 'opt'})
 call minpac#add('maxmellon/vim-jsx-pretty', {'type': 'opt'})
+call minpac#add('wincent/scalpel')
 " todo: move to opt
 call minpac#add('mbbill/undotree')
 call minpac#add('wincent/ferret')
