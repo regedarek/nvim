@@ -1,11 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/Users/dariuszfinster/.config/nvim/plugin'
-let g:netrw_dirhist_2='/Users/dariuszfinster/.config/nvim/plugin/mappings'
-let g:netrw_dirhist_3='/Users/dariuszfinster/.config/nvim/plugin'
-let g:netrw_dirhist_4='/Users/dariuszfinster/.config/nvim/plugin/mappings'
-let g:netrw_dirhist_5='/Users/dariuszfinster/.config/nvim/plugin'
-let g:netrw_dirhist_6='/Users/dariuszfinster/.config/nvim'
-let g:netrw_dirhist_7='/Users/dariuszfinster/.config/nvim/plugin'
-let g:netrw_dirhist_8='/Users/dariuszfinster/.config/nvim'
-let g:netrw_dirhist_9='/Users/dariuszfinster/.config/nvim/plugin'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/dariuszfinster/.config/nvim/pack'
+let g:netrw_dirhist_2='/Users/dariuszfinster/.config/nvim'
+let g:netrw_dirhist_3='/Users/dariuszfinster/.config'

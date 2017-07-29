@@ -51,8 +51,10 @@ set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~
 set wildcharm=<C-z>                   " substitute for 'wildchar' (<Tab>) in macros
 if has('wildignore')
   set wildignore+=*.o
+  set wildignore=.git,.svn,CVS,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,tags,*.tags
 endif
 if has('wildmenu')
   set wildmenu                        " show options as list when switching buffers etc
 endif
 set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
+highlight Comment gui=italic
