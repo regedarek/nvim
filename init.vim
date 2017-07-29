@@ -14,6 +14,7 @@ call minpac#add('maxmellon/vim-jsx-pretty', {'type': 'opt'})
 " todo: move to opt
 call minpac#add('mbbill/undotree')
 call minpac#add('wincent/ferret')
+call minpac#add('wincent/loupe')
 
 command!   PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
 command!   PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()

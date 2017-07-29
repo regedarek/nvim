@@ -10,7 +10,6 @@ set mouse=a
 set noswapfile
 set nowrap bs=2 fo=cqrt ls=2 shm=at tw=0 wm=0 ww=<,>,h,l 
 set tabstop=2 shiftwidth=2 expandtab
-set visualbell t_vb=                  " stop annoying beeping for non-error errors
 
 set list                              " show whitespace
 set listchars=nbsp:⦸                  " CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
@@ -46,3 +45,14 @@ endif
 if exists('+relativenumber')
   set relativenumber                  " show relative numbers in gutter
 endif
+
+set visualbell t_vb=                  " stop annoying beeping for non-error errors
+set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
+set wildcharm=<C-z>                   " substitute for 'wildchar' (<Tab>) in macros
+if has('wildignore')
+  set wildignore+=*.o
+endif
+if has('wildmenu')
+  set wildmenu                        " show options as list when switching buffers etc
+endif
+set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
