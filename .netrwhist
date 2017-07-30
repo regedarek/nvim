@@ -1,5 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/Users/dariuszfinster/.config/nvim/pack'
-let g:netrw_dirhist_2='/Users/dariuszfinster/.config/nvim'
-let g:netrw_dirhist_3='/Users/dariuszfinster/.config'

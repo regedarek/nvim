@@ -3,11 +3,12 @@ nnoremap <Leader>w :write<CR>
 nnoremap <Leader>x :xit<CR>
 nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>o :only<CR>
+nnoremap <Leader>d g*<CR>
 
 nnoremap <silent> <Leader>zz :call mappings#leader#zap()<CR>
 nnoremap <silent> <Leader>r :call mappings#leader#cycle_numbering()<CR>
 
-silent! map <unique> <Leader>rt :Run("rspec ".expand("%")."\n")<CR>
+silent! map <unique> <Leader>rt :Run("rspec ".expand("%"))<CR>
 silent! map <unique> <Leader>ra :Run("rspec spec/components/trip")<CR>
 silent! map <unique> <Leader>. :<Up><CR>
 silent! map <unique> <Leader>a :A<CR>
