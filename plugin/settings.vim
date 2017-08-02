@@ -4,7 +4,7 @@ set number
 set hidden
 set cursorline
 set expandtab
-set clipboard=unnamed
+set clipboard=unnamedplus
 set nobackup
 set mouse=a
 set noswapfile
@@ -50,7 +50,6 @@ set visualbell t_vb=                  " stop annoying beeping for non-error erro
 set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 set wildcharm=<C-z>                   " substitute for 'wildchar' (<Tab>) in macros
 if has('wildignore')
-  set wildignore+=*.o
   set wildignore=.git,.svn,CVS,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,tags,*.tags
 endif
 if has('wildmenu')
@@ -58,3 +57,7 @@ if has('wildmenu')
 endif
 set wildmode=longest:full,full        " shell-like autocomplete to unambiguous portion
 highlight Comment gui=italic
+if has("persistent_undo")
+  set undodir=~/.undodir/
+  set undofile
+endif
