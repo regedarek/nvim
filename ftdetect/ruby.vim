@@ -1,1 +1,1 @@
-autocmd BufNewFile,BufRead .rabl set ft=ruby
+autocmd BufNewFile,BufRead *.rabl set ft=ruby

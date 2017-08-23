@@ -1,4 +1,4 @@
-let g:ColorColumnBlacklist = ['diff', 'undotree', 'qf']
+let g:ColorColumnBlacklist = ['diff', 'undotree', 'qf', 'tagbar']
 
 function! autocmds#should_colorcolumn() abort
   return index(g:ColorColumnBlacklist, &filetype) == -1
