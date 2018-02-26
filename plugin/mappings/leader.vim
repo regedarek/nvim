@@ -2,7 +2,7 @@ nnoremap <Leader>q :quit<CR>
 nnoremap <Leader>w :write<CR>
 nnoremap <Leader>x :xit<CR>
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Leader>o :only<CR>
+nnoremap <Leader>o :tabnew %<CR>
 nnoremap <Leader>d g*<CR>
 
 nnoremap <silent> <Leader>zz :call mappings#leader#zap()<CR>

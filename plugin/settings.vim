@@ -42,10 +42,6 @@ if exists('+colorcolumn')
   let &l:colorcolumn='+' . join(range(0, 254), ',+')
 endif
 
-if exists('+relativenumber')
-  set relativenumber                  " show relative numbers in gutter
-endif
-
 set visualbell t_vb=                  " stop annoying beeping for non-error errors
 set whichwrap=b,h,l,s,<,>,[,],~       " allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 set wildcharm=<C-z>                   " substitute for 'wildchar' (<Tab>) in macros

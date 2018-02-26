@@ -6,15 +6,12 @@ call minpac#add('tpope/vim-vinegar')
 call minpac#add('morhetz/gruvbox')
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('tpope/vim-projectionist')
+call minpac#add('ludovicchabant/vim-gutentags')
 call minpac#add('benmills/vimux', {'type': 'opt'})
 call minpac#add('thoughtbot/vim-rspec')
 call minpac#add('pangloss/vim-javascript', {'type': 'opt'})
 call minpac#add('maxmellon/vim-jsx-pretty', {'type': 'opt'})
-call minpac#add('Shougo/deoplete.nvim', {'type': 'opt', 'do': ':UpdateRemotePlugins'})
-call minpac#add('fishbullet/deoplete-ruby')
 call minpac#add('tpope/vim-eunuch')
-call minpac#add('carlitux/deoplete-ternjs')
-call minpac#add('ternjs/tern_for_vim')
 call minpac#add('tpope/vim-endwise')
 call minpac#add('wincent/scalpel')
 call minpac#add('wincent/terminus')
@@ -23,12 +20,16 @@ call minpac#add('wincent/ferret')
 call minpac#add('wincent/loupe')
 call minpac#add('Yggdroot/indentLine')
 call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-rhubarb')
 call minpac#add('junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' })
 call minpac#add('junegunn/fzf.vim')
 call minpac#add('majutsushi/tagbar')
+call minpac#add('weirongxu/plantuml-previewer.vim')
+call minpac#add('aklt/plantuml-syntax')
+call minpac#add('tyru/open-browser.vim')
 
-command!   PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
-command!   PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
+command! PackUpdate packadd minpac | source $MYVIMRC | call minpac#update()
+command! PackClean  packadd minpac | source $MYVIMRC | call minpac#clean()
 
 let mapleader="\<Space>"
 let g:ruby_path = system('echo $HOME/.rbenv/shims')
@@ -51,3 +52,17 @@ let g:tagbar_type_ruby = {
             \ ],
             \ 'ctagsbin':  'ctags',
             \ }
+
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>,
+  \                    <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                            : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                    <bang>0)
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler

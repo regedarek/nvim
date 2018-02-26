@@ -126,7 +126,7 @@ function! s:parse(args) abort
   for l:arg in l:args
     " Because we split on unescaped spaces, we know any escaped spaces remaining
     " inside arguments really are supposed to be just spaces.
-    let l:arg=substitute(l:arg, '\\ ', ' ', '')
+    let l:arg=substitute(l:arg, '\\ ', ' ', 'g')
 
     if ferret#private#option(l:arg)
       " Options get passed through as-is.
@@ -227,15 +227,15 @@ endfunction
 function! ferret#private#buflist() abort
   let l:buflist=getbufinfo({'buflisted': 1})
   let l:bufpaths=filter(map(l:buflist, 'v:val.name'), 'v:val !=# ""')
-  return l:bufpaths
+  return join(l:bufpaths, ' ')
 endfunction
 
 function! ferret#private#back(bang, args) abort
-  call call('ferret#private#ack', a:bang, a:args . ' ' . ferret#private#buflist())
+  call call('ferret#private#ack', [a:bang, a:args . ' ' . ferret#private#buflist()])
 endfunction
 
 function! ferret#private#black(bang, args) abort
-  call call('ferret#private#lack', a:bang, a:args . ' ' . ferret#private#buflist())
+  call call('ferret#private#lack', [a:bang, a:args . ' ' . ferret#private#buflist()])
 endfunction
 
 function! ferret#private#installprompt() abort

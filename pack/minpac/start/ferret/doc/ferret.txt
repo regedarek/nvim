@@ -208,7 +208,7 @@ following are true:
 - A mapping with the same |{lhs}| already exists.
 - An alternative mapping for the same functionality has already been set up
   from a |.vimrc|.
-- The mapping has been suppressed by setting |g:FerretMap| to 1 in your |.vimrc|.
+- The mapping has been suppressed by setting |g:FerretMap| to 0 in your |.vimrc|.
 
 Mappings specific to the quickfix window ~
 
@@ -638,6 +638,16 @@ order):
 - Vaibhav Sagar
 
 HISTORY                                                         *ferret-history*
+
+3.0.2 (25 October 2017) ~
+
+- Fix broken |:Back| and |:Black| commands
+  (https://github.com/wincent/ferret/issues/48).
+
+3.0.1 (24 August 2017) ~
+
+- Fix failure to handle search patterns containing multiple escaped spaces
+  (https://github.com/wincent/ferret/issues/49).
 
 3.0 (13 June 2017) ~
 
