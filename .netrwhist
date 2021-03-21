@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/Users/regedarek/.config/nvim'
+let g:netrw_dirhist_9='/Users/regedarek/.config'
+let g:netrw_dirhist_8='/Users/regedarek'
+let g:netrw_dirhist_7='/Users/regedarek/.vim'
+let g:netrw_dirhist_6='/Users/regedarek/code/kw-app/app/components/shop/admin/orders'
+let g:netrw_dirhist_5='/Users/regedarek/code/kw-app/app/components/settlement/admin/contractors'
+let g:netrw_dirhist_4='/Users/regedarek/code/kw-app/app/components/settlement/admin/projects'
+let g:netrw_dirhist_3='/Users/regedarek/code/kw-app/app/components/settlement/admin/projects/business'
+let g:netrw_dirhist_2='/Users/regedarek/code/kw-app/app/components/settlement/admin/projects/business/sign_up'
+let g:netrw_dirhist_1='/Users/regedarek/code/kw-app/app/components/settlement/admin/projects/business'

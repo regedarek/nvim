@@ -1,1 +1,1 @@
-let g:rspec_command = 'Run("be rspec {spec}\n")'
+let g:rspec_command = 'Run("bundle exec rspec {spec}\n")'

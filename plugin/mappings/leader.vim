@@ -19,3 +19,5 @@ silent! map <unique> <Leader>gf :GFiles?<CR>
 
 nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<CR>
 nnoremap <LocalLeader>v :cd ~/.config/nvim/<CR>:edit ~/.config/nvim/<CR>
+
+nnoremap <silent> <Tab><Tab> :FloatermToggle<CR>

@@ -7,16 +7,17 @@ CONTENTS                                                       *ferret-contents*
 3. Commands               |ferret-commands|
 4. Mappings               |ferret-mappings|
 5. Options                |ferret-options|
-6. Custom autocommands    |ferret-custom-autocommands|
-7. Overrides              |ferret-overrides|
-8. Troubleshooting        |ferret-troubleshooting|
-9. FAQ                    |ferret-faq|
-10. Related               |ferret-related|
-11. Website               |ferret-website|
-12. License               |ferret-license|
-13. Development           |ferret-development|
-14. Authors               |ferret-authors|
-15. History               |ferret-history|
+6. Functions              |ferret-functions|
+7. Custom autocommands    |ferret-custom-autocommands|
+8. Overrides              |ferret-overrides|
+9. Troubleshooting        |ferret-troubleshooting|
+10. FAQ                   |ferret-faq|
+11. Related               |ferret-related|
+12. Website               |ferret-website|
+13. License               |ferret-license|
+14. Development           |ferret-development|
+15. Authors               |ferret-authors|
+16. History               |ferret-history|
 
 INTRO                                                             *ferret-intro*
 
@@ -47,14 +48,18 @@ provides a |:Lack| command that behaves like |:Ack| but uses the |location-list|
 instead, and a <leader>l mapping as a shortcut to |:Lack|.
 
 |:Back| and |:Black| are analogous to |:Ack| and |:Lack|, but scoped to search
-within currently open buffers only.
+within currently open buffers only. |:Quack| is scoped to search among the
+files currently in the |quickfix| list.
 
 2. Streamlined multi-file replace ~
 
 The companion to |:Ack| is |:Acks| (mnemonic: "Ack substitute", accessible via
 shortcut <leader>r), which allows you to run a multi-file replace across all
 the files placed in the |quickfix| window by a previous invocation of |:Ack| (or
-|:Back|).
+|:Back|, or |:Quack|).
+
+Correspondingly, results obtained by |:Lack| can be targeted for replacement
+with |:Lacks|.
 
 3. Quickfix listing enhancements ~
 
@@ -71,8 +76,11 @@ easier to immediately identify matches by centering them within the viewport.
 Finally, Ferret provides a |:Qargs| command that puts the files currently in
 the |quickfix| listing into the |:args| list, where they can be operated on in
 bulk via the |:argdo| command. This is what's used under the covers on older
-versions of Vim by |:Acks| to do its work (on newer versions the built-in
-|:cfdo| is used instead).
+versions of Vim by |:Acks| to do its work (on newer versions the built-in |:cdo|
+or |:cfdo| are used instead).
+
+Ferret also provides a |:Largs| command, which is a |location-list| analog for
+|:Qargs|.
 
 INSTALLATION                                               *ferret-installation*
 
@@ -97,7 +105,8 @@ To generate help tags under Pathogen, you can do so from inside Vim with:
 <
 COMMANDS                                                       *ferret-commands*
 
-:Ack {pattern} {options}                                                  *:Ack*
+                                                                          *:Ack*
+:Ack {pattern} {options} ~
 
 Searches for {pattern} in all the files under the current directory (see
 |:pwd|), unless otherwise overridden via {options}, and displays the results
@@ -122,7 +131,7 @@ regular expression syntax), you could do:
 <
 Likewise, {options} are passed through. In this example, we pass the `-w`
 option (to search on word boundaries), and scope the search to the "foo" and
-"bar" subdirectories: >
+"bar" subdirectories:
 >
     :Ack -w something foo bar
 <
@@ -131,12 +140,14 @@ enter |Cmdline-mode| with `:Ack` inserted on the |Cmdline|. Likewise <leader>s
 (|<Plug>(FerretAckWord)|) is a shortcut for running |:Ack| with the word
 currently under the cursor.
 
-:Ack! {pattern} {options}                                                *:Ack!*
+                                                                         *:Ack!*
+:Ack! {pattern} {options} ~
 
 Like |:Ack|, but returns all results irrespective of the value of
 |g:FerretMaxResults|.
 
-:Lack {pattern} {options}                                                *:Lack*
+                                                                         *:Lack*
+:Lack {pattern} {options} ~
 
 Just like |:Ack|, but instead of using the |quickfix| listing, which is global
 across an entire Vim instance, it uses the |location-list|, which is a
@@ -144,12 +155,14 @@ per-window construct.
 
 Note that |:Lack| always runs synchronously via |:cexpr|.
 
-:Lack! {pattern} {options}                                              *:Lack!*
+                                                                        *:Lack!*
+:Lack! {pattern} {options} ~
 
 Like |:Lack|, but returns all results irrespective of the value of
 |g:FerretMaxResults|.
 
-:Back {pattern} {options}                                                *:Back*
+                                                                         *:Back*
+:Back {pattern} {options} ~
 
 Like |:Ack|, but searches only listed buffers. Note that the search is still
 delegated to the underlying |'grepprg'| (`rg`, `ag`, `ack` or `ack-grep`), which means
@@ -157,12 +170,14 @@ that only buffers written to disk will be searched. If no buffers are
 written to disk, then |:Back| behaves exactly like |:Ack| and will search all
 files in the current directory.
 
-:Back! {pattern} {options}                                              *:Back!*
+                                                                        *:Back!*
+:Back! {pattern} {options} ~
 
 Like |:Back|, but returns all results irrespective of the value of
 |g:FerretMaxResults|.
 
-:Black {pattern} {options}                                              *:Black*
+                                                                        *:Black*
+:Black {pattern} {options} ~
 
 Like |:Lack|, but searches only listed buffers. As with |:Back|, the search is
 still delegated to the underlying |'grepprg'| (`rg`, `ag`, `ack` or `ack-grep`), which
@@ -170,12 +185,29 @@ means that only buffers written to disk will be searched. Likewise, If no
 buffers are written to disk, then |:Black| behaves exactly like |:Lack| and will
 search all files in the current directory.
 
-:Black! {pattern} {options}                                            *:Black!*
+                                                                       *:Black!*
+:Black! {pattern} {options} ~
 
 Like |:Black|, but returns all results irrespective of the value of
 |g:FerretMaxResults|.
 
-:Acks /{pattern}/{replacement}/                                          *:Acks*
+                                                                        *:Quack*
+:Quack {pattern} {options} ~
+
+Like |:Ack|, but searches only among files currently in the |quickfix| listing.
+Note that the search is still delegated to the underlying |'grepprg'| (`rg`, `ag`,
+`ack` or `ack-grep`), which means that only buffers written to disk will be
+searched. If no buffers are written to disk, then |:Quack| behaves exactly
+like |:Ack| and will search all files in the current directory.
+
+                                                                       *:Quack!*
+:Quack! {pattern} {options} ~
+
+Like |:Quack|, but returns all results irrespective of the value of
+|g:FerretMaxResults|.
+
+                                                                         *:Acks*
+:Acks /{pattern}/{replacement}/ ~
 
 Takes all of the files currently in the |quickfix| listing and performs a
 substitution of all instances of {pattern} (a standard Vim search |pattern|)
@@ -189,7 +221,35 @@ directory:
     :Ack foo
     :Acks /foo/bar/
 <
-:Qargs                                                                  *:Qargs*
+The pattern and replacement are passed through literally to Vim's
+|:substitute| command, preserving all characters and escapes, including
+references to matches in the pattern. For example, the following could be
+used to swap the order of "foo123" and "bar":
+>
+    :Acks /\v(foo\d+)(bar)/\2\1/
+<
+                                                                        *:Lacks*
+:Lacks /{pattern}/{replacement}/ ~
+
+Takes all of the files in the current |location-list| and performs a
+substitution of all instances of {pattern} by {replacement}. This is an
+analog of the |:Acks| command, but operates on the |location-list| instead of
+the |quickfix| listing.
+
+                                                            *:FerretCancelAsync*
+:FerretCancelAsync  ~
+
+Cancels any asynchronous search that may be in progress in the background.
+
+                                                              *:FerretPullAsync*
+:FerretPullAsync  ~
+
+Eagerly populates the |quickfix| (or |location-list|) window with any results
+that may have been produced by a long-running asynchronous search in
+progress in the background.
+
+                                                                        *:Qargs*
+:Qargs  ~
 
 This is a utility function that is used internally when running on older
 versions of Vim (prior to version 8) but is also generally useful enough to
@@ -197,6 +257,14 @@ warrant being exposed publicly.
 
 It takes the files currently in the |quickfix| listing and sets them as |:args|
 so that they can be operated on en masse via the |:argdo| command.
+
+                                                                        *:Largs*
+:Largs  ~
+
+Just like |:Qargs|, but applies to the current |location-list|.
+
+It takes the files in the current |location-list| and sets them as |:args| so
+that they can be operated on en masse via the |:argdo| command.
 
 MAPPINGS                                                       *ferret-mappings*
 
@@ -239,7 +307,7 @@ your |.vimrc| instead using |:nmap|:
 <
 
                                                          *<Plug>(FerretAckWord)*
-Ferret maps <leader>s (mnemonix: "selection) to |<Plug>(FerretAckWord)|, which
+Ferret maps <leader>s (mnemonic: "selection) to |<Plug>(FerretAckWord)|, which
 uses |:Ack| to search for the word currently under the cursor. To use an
 alternative mapping instead, create a different one in your |.vimrc| instead
 using |:nmap|:
@@ -293,6 +361,49 @@ running |:Ack| or |:Lack|. If left unset, Ferret will respect the current
     let g:FerretHlsearch=0
 <
 
+                                                           *g:FerretAcksCommand*
+|g:FerretAcksCommand|                                    string (default: "cdo")
+
+Controls the underlying Vim command that |:Acks| uses to peform substitutions.
+On versions of Vim that have it, defaults to |:cdo|, which means that
+substitutions will apply to the specific lines currently in the |quickfix|
+listing. Can be set to "cfdo" to instead use |:cfdo| (if available), which
+means that the substitutions will be applied on a per-file basis to all the
+files in the |quickfix| listing. This distinction is important if you have
+used Ferret's bindings to delete entries from the listing.
+>
+    let g:FerretAcksCommand='cfdo'
+<
+
+                                                          *g:FerretLacksCommand*
+|g:FerretLacksCommand|                                   string (default: "ldo")
+
+Controls the underlying Vim command that |:Lacks| uses to peform
+substitutions. On versions of Vim that have it, defaults to |:ldo|, which
+means that substitutions will apply to the specific lines currently in the
+|location-list|. Can be set to "lfdo" to instead use |:lfdo| (if available),
+which means that the substitutions will be applied on a per-file basis to
+all the files in the |location-list|. This distinction is important if you
+have used Ferret's bindings to delete entries from the listing.
+>
+    let g:FerretLacksCommand='lfdo'
+<
+
+                                                             *g:FerretVeryMagic*
+|g:FerretVeryMagic|                                         boolean (default: 1)
+
+Controls whether the |<Plug>(FerretAck)| mapping should populate the command
+line with the |/\v| "very magic" marker. Given that the argument passed to
+|:Acks| is handed straight to Vim, using "very magic" makes it more likely
+that the (probably Perl-compatible) regular expression used in the initial
+search can be used directly with Vim's (famously not-Perl-compatible)
+regular expression engine.
+
+To prevent the automatic use of |/\v|, set this option to 0:
+>
+    let g:FerretVeryMagic=0
+<
+
                                                             *g:FerretExecutable*
 |g:FerretExecutable|                      string (default: "rg,ag,ack,ack-grep")
 
@@ -308,6 +419,21 @@ Example:
     " Prefer `ag` over `rg`.
     let g:FerretExecutable='ag,rg'
 <
+
+                                                   *g:FerretExecutableArguments*
+|g:FerretExecutableArguments|                                 dict (default: {})
+
+Allows you to override the default arguments that get passed to the
+underlying search executables. For example, to add `-s` to the default
+arguments passed to `ack` (`--column --with-filename`):
+>
+    let g:FerretExecutableArguments = {
+      \   'ack': '--column --with-filename -s'
+      \ }
+<
+To find out the default arguments for a given executable, see
+|ferret#get_default_arguments()|.
+
 
                                                             *g:FerretMaxResults*
 |g:FerretMaxResults|                                    number (default: 100000)
@@ -343,6 +469,20 @@ Example override:
     let g:FerretAutojump=2
 <
 
+                                                             *g:FerretQFHandler*
+|g:FerretQFHandler|                           string (default: "botright copen")
+
+Allows you to override the mechanism that opens the |quickfix| window to
+display search results.
+
+
+                                                             *g:FerretLLHandler*
+|g:FerretLLHandler|                                    string (default: "lopen")
+
+Allows you to override the mechanism that opens the |location-list| window to
+display search results.
+
+
                                                              *g:FerretQFOptions*
 |g:FerretQFOptions|                                         boolean (default: 1)
 
@@ -362,8 +502,8 @@ To prevent the custom settings from being applied, set |g:FerretQFOptions| to
                                                                  *g:FerretQFMap*
 |g:FerretQFMap|                                             boolean (default: 1)
 
-Controls whether to set up mappings in the |quickfix| results window for
-deleting results. The mappings include:
+Controls whether to set up mappings in the |quickfix| results window and
+|location-list| for deleting results. The mappings include:
 
 - `d` (|visual-mode|): delete visual selection
 - `dd` (|Normal-mode|): delete current line
@@ -394,6 +534,21 @@ as soon as Vim launches), then set |g:FerretLazyInit| to 0 in your |.vimrc|:
     let g:FerrerLazyInit=0
 <
 
+                                                           *g:FerretAckWordWord*
+|g:FerretAckWordWord|                                       boolean (default: 0)
+
+When set to 1, passes the `-w` option to the underlying search tool whenever
+|<Plug>(FerretAckWord)| is pressed. This forces the tool to match only on word
+boundaries (ie. analagous to Vim's |star| mapping).
+
+The default is 0, which means the `-w` option is not passed and matches need
+not occur on word boundaries (ie. analagous to Vim's |gstar| mapping).
+
+To override the default:
+>
+    let g:FerretAckWordWord=1
+<
+
                                                                    *g:FerretMap*
 |g:FerretMap|                                               boolean (default: 1)
 
@@ -420,13 +575,26 @@ set to 0:
 
 Sets the '|grepformat|' used by Ferret.
 
+FUNCTIONS                                                     *ferret-functions*
+
+                                                *ferret#get_default_arguments()*
+ferret#get_default_arguments() ~
+
+Call this with an executable name to find out the default arguments that
+will be passed when invoking that executable. For example:
+>
+    echo ferret#get_default_arguments('rg')
+<
+This may be useful if you wish to extend or otherwise modify the arguments
+by setting |g:FerretExecutableArguments|.
+
 CUSTOM AUTOCOMMANDS                                 *ferret-custom-autocommands*
 
 
                                                 *FerretDidWrite* *FerretWillWrite*
 For maximum compatibility with other plug-ins, Ferret runs the following
 "User" autocommands before and after running the file writing operations
-during |:Acks|:
+during |:Acks| or |:Lacks|:
 
 - FerretWillWrite
 - FerretDidWrite
@@ -450,7 +618,7 @@ adjusts a number of settings to improve the usability of search results.
 
 
                                                                  *ferret-nolist*
-'nolist'
+'nolist' ~
 
 Turned off to reduce visual clutter in the search results, and because
 'list' is most useful in files that are being actively edited, which is not
@@ -458,7 +626,7 @@ the case for |quickfix| results.
 
 
                                                        *ferret-norelativenumber*
-'norelativenumber'
+'norelativenumber' ~
 
 Turned off, because it is more useful to have a sense of absolute progress
 through the results list than to have the ability to jump to nearby results
@@ -467,7 +635,7 @@ previous file, which are both handled nicely by |:cnf| and |:cpf| respectively).
 
 
                                                                  *ferret-nowrap*
-'nowrap'
+'nowrap' ~
 
 Turned off to avoid ugly wrapping that makes the results list hard to read,
 and because in search results, the most relevant information is the
@@ -475,13 +643,13 @@ filename, which is on the left and is usually visible even without wrapping.
 
 
                                                                  *ferret-number*
-'number'
+'number' ~
 
 Turned on to give a sense of absolute progress through the results.
 
 
                                                               *ferret-scrolloff*
-'scrolloff'
+'scrolloff' ~
 
 Set to 0 because the |quickfix| listing is usually small by default, so trying
 to keep the current line away from the edge of the viewpoint is futile; by
@@ -489,7 +657,7 @@ definition it is usually near the edge.
 
 
                                                            *ferret-nocursorline*
-'nocursorline'
+'nocursorline' ~
 
 Turned off to reduce visual clutter.
 
@@ -538,7 +706,7 @@ Why do Ferret commands start with "Ack", "Lack" and so on? ~
 
 Ferret was originally the thinnest of wrappers (7 lines of code in my
 |.vimrc|) around `ack`. The earliest traces of it can be seen in the initial
-commit to my dotfiles repo in May, 2009 (https://rfr.to/h).
+commit to my dotfiles repo in May, 2009 (https://wincent.com/h).
 
 So, even though Ferret has a new name now and actually prefers `rg` then `ag`
 over `ack`/`ack-grep` when available, I prefer to keep the command names intact
@@ -633,11 +801,72 @@ order):
 - Daniel Silva
 - Filip Szymański
 - Joe Lencioni
-- Nelo-Thara Wallus
+- Jon Parise
+- Nelo Wallus
 - Tom Dooner
 - Vaibhav Sagar
+- Yoni Weill
 
+This list produced with:
+>
+    :read !git shortlog -s HEAD | grep -v 'Greg Hurrell' | cut -f 2-3 | sed -e 's/^/- /'
+<
 HISTORY                                                         *ferret-history*
+
+master (not yet released) ~
+
+- Add |g:FerretAckWordWord| setting, to pass `-w` to the underlying search tool
+  when |<Plug>(FerretAckWord)| is pressed
+  (https://github.com/wincent/ferret/issues/66).
+- Use `:normal!` instead of |:normal| to avoid running custom mappings (patch
+  from Yoni Weill, https://github.com/wincent/ferret/pull/67).
+- Append a trailing slash when autocompleting a directory name
+  (https://github.com/wincent/ferret/issues/69).
+
+5.0 (8 June 2019) ~
+
+- The |<Plug>(FerretAcks)| mapping now uses |/\v| "very magic" mode by default.
+  This default can be changed using the |g:FerretVeryMagic| option.
+- |:Acks| now preferentially uses |:cdo| (rather than |:cfdo|) to make
+  replacements, which means that it no longer operates on a per-file level
+  and instead targets individual entries within the |quickfix| window. This is
+  relevant if you've used Ferrets mappings to delete entries from the
+  window. The old behavior can be restored with the |g:FerretAcksCommand|
+  option.
+- Ferret now has a |:Lacks| command, an analog to |:Acks| which applies to the
+  |location-list|.
+- Likewise, Ferret now has a |:Largs| command, analogous to |:Qargs|, which
+  applies to the |location-list| instead of the |quickfix| window.
+- The Ferret bindings that are set-up in the |quickfix| window when
+  |g:FerretQFMap| is enabled now also apply to the |location-list|.
+
+4.1 (31 January 2019) ~
+
+- Added |:Quack| command, analogous to |:Ack| but scoped to the files currently
+  listed in the |quickfix| window.
+- Fixed option autocompletion.
+
+4.0.2 (11 January 2019) ~
+
+- Restore compatibility with versions of `rg` prior to v0.8
+  (https://github.com/wincent/ferret/issues/59).
+
+4.0.1 (8 January 2019) ~
+
+- Make |:Acks| behavior the same irrespective of the |'gdefault'| setting.
+
+4.0 (25 December 2018) ~
+
+- Try to avoid "press ENTER to continue" prompts.
+- Put search term in |w:quickfix_title| for use in statuslines
+  (https://github.com/wincent/ferret/pull/57).
+- Add |g:FerretExecutableArguments| and |ferret#get_default_arguments()|
+  (https://github.com/wincent/ferret/pull/46).
+
+3.0.3 (23 March 2018) ~
+
+- Fix for |:Lack| results opening in quickfix listing in Neovim
+  (https://github.com/wincent/ferret/issues/47).
 
 3.0.2 (25 October 2017) ~
 

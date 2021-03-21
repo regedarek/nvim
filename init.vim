@@ -7,7 +7,9 @@ call minpac#add('morhetz/gruvbox')
 call minpac#add('christoomey/vim-tmux-navigator')
 call minpac#add('tpope/vim-projectionist')
 call minpac#add('ludovicchabant/vim-gutentags')
+call minpac#add('voldikss/vim-floaterm')
 call minpac#add('benmills/vimux', {'type': 'opt'})
+call minpac#add('srcery-colors/srcery-vim')
 call minpac#add('thoughtbot/vim-rspec')
 call minpac#add('pangloss/vim-javascript', {'type': 'opt'})
 call minpac#add('maxmellon/vim-jsx-pretty', {'type': 'opt'})
@@ -38,8 +40,10 @@ let g:undotree_WindowLayout = 2
 filetype indent plugin on
 syntax on
 
+set formatoptions-=t
+
 set termguicolors
-colorscheme gruvbox
+colorscheme srcery
 set background=dark
 let g:tagbar_type_ruby = {
             \ 'kinds' : [
